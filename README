@@ -1,0 +1,7 @@
+undirected:
+kruskals algorithm
+
+directed:
+use trojan algorithm to detect SCC
+remove the lightest weighted edges in every SCC
+recursively doing the above algorithm until no cycle exists

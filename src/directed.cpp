@@ -55,7 +55,7 @@ void Directed::DKruskalAddBack(int &removedWeight, vector<Edge> &removedEdges)
         if (currEdge.w > 0)
         {
             // only consider positive edges
-            if (cycleChecker(URemainedEdges, currEdge, adjList, vAdded))
+            if (cycleChecker(currEdge, adjList, vAdded))
             {
                 // add back => cycle exist => cannot add back
                 removedEdges.push_back(currEdge);
@@ -164,7 +164,7 @@ void Directed::DKruskalGreedy(int &removedWeight, vector<Edge> &removedEdges)
         // cout << currEdge.u << "\t" << currEdge.v << "\t" << currEdge.w << "\n";
         if (vAdded[currEdge.u] && vAdded[currEdge.v])
         {
-            if (cycleChecker(resultEdges, currEdge, adjList, vAdded))
+            if (cycleChecker(currEdge, adjList, vAdded))
             {
                 // cout << "remove\n";
                 removedWeight += currEdge.w;
@@ -194,15 +194,8 @@ void Directed::DKruskalGreedy(int &removedWeight, vector<Edge> &removedEdges)
     delete[] adjList;
 }
 
-bool Directed::cycleChecker(vector<Edge> resultEdges, Edge temp, vector<int> *adjList, bool *vAdded)
+bool Directed::cycleChecker(Edge temp, vector<int> *adjList, bool *vAdded)
 {
-    Edge *edgesToCheck = new Edge[resultEdges.size() + 1];
-    for (int i = 0; i < resultEdges.size(); i++)
-    {
-        edgesToCheck[i] = resultEdges[i];
-    }
-    edgesToCheck[resultEdges.size()] = temp;
-
     vector<int> *tempAdjList = new vector<int>[this->V];
     for (int i = 0; i < this->V; i++)
     {
@@ -235,7 +228,6 @@ bool Directed::cycleChecker(vector<Edge> resultEdges, Edge temp, vector<int> *ad
             // cout << "return cycle does not exist\n";
         }
     }
-    delete[] edgesToCheck;
     delete[] tempAdjList;
     delete[] tempVAdded;
     return false;

@@ -29,7 +29,7 @@ private:
     void unionSets(int *parent, int *rank, int x, int y);
 
     void DKruskalGreedy(int &removedWeight, vector<Edge> &removedEdges);
-    bool cycleChecker(vector<Edge> resultEdges, Edge temp, vector<int> *adjList, bool *vAdded);
+    bool cycleChecker(Edge temp, vector<int> *adjList, bool *vAdded);
     bool cycleDfs(int vertex, vector<DfsState> &state, vector<int> *adjList);
 };
 

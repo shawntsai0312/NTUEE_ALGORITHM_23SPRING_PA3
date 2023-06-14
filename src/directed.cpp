@@ -11,23 +11,24 @@ Directed::Directed(int V, int E, Edge *edgeArr)
 
 void Directed::DSolver(int &removedWeight, vector<Edge> &removedEdges)
 {
-    int weightAnswer1 = 0, weightAnswer2 = 0;
-    vector<Edge> removedAnswer1, removedAnswer2;
-    DKruskalAddBack(weightAnswer1, removedAnswer1);
-    DKruskalGreedy(weightAnswer2, removedAnswer2);
-    // cout << weightAnswer1 << "\t" << weightAnswer2 << "\n";
-    if (weightAnswer1 <= weightAnswer2)
-    {
-        cout << "Add Back\n";
-        removedWeight = weightAnswer1;
-        removedEdges = removedAnswer1;
-    }
-    else
-    {
-        cout << "Greedy\n";
-        removedWeight = weightAnswer2;
-        removedEdges = removedAnswer2;
-    }
+    // int weightAnswer1 = 0, weightAnswer2 = 0;
+    // vector<Edge> removedAnswer1, removedAnswer2;
+    // DKruskalAddBack(weightAnswer1, removedAnswer1);
+    // DKruskalGreedy(weightAnswer2, removedAnswer2);
+    // // cout << weightAnswer1 << "\t" << weightAnswer2 << "\n";
+    // if (weightAnswer1 <= weightAnswer2)
+    // {
+    //     cout << "Add Back\n";
+    //     removedWeight = weightAnswer1;
+    //     removedEdges = removedAnswer1;
+    // }
+    // else
+    // {
+    //     cout << "Greedy\n";
+    //     removedWeight = weightAnswer2;
+    //     removedEdges = removedAnswer2;
+    // }
+    DKruskalAddBack(removedWeight,removedEdges);
 }
 
 void Directed::DKruskalAddBack(int &removedWeight, vector<Edge> &removedEdges)

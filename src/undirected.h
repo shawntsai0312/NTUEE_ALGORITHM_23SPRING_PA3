@@ -15,8 +15,8 @@ private:
     int V;
     int E;
     Edge *edgeArr;
-    int findRoot(int *parent, int index);
-    void unionSets(int *parent, int *rank, int x, int y);
+    int findRoot(int *root, int index, int myIndex);
+    void unionSets(int *root, int *rank, int x, int y);
 };
 
 #endif

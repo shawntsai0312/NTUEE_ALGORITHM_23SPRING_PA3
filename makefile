@@ -2,7 +2,7 @@
 
 # Variables
 CC = g++
-CFLAGS = -Wall -Werror -O3
+CFLAGS = -Wall -O3
 LDFLAGS =
 
 # Source directory

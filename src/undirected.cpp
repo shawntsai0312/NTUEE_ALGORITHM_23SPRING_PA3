@@ -9,32 +9,38 @@ Undirected::Undirected(int V, int E, Edge *edgeArr)
       E(E),
       edgeArr(edgeArr){};
 
-int Undirected::findRoot(int *parent, int index)
+int Undirected::findRoot(int *root, int index, int myIndex)
 {
-    if (parent[index] == -1)
+    if (root[index] == -1)
+    {
+        if (index != myIndex)
+        {
+            root[myIndex] = index;
+        }
         return index;
-    return this->findRoot(parent, parent[index]);
+    }
+    return this->findRoot(root, root[index], myIndex);
 }
 
-void Undirected::unionSets(int *parent, int *rank, int x, int y)
+void Undirected::unionSets(int *root, int *rank, int x, int y)
 {
-    int xRoot = this->findRoot(parent, x);
-    int yRoot = this->findRoot(parent, y);
+    int xRoot = this->findRoot(root, x, x);
+    int yRoot = this->findRoot(root, y, y);
 
     if (rank[xRoot] > rank[yRoot])
     {
         // y merge into x
-        parent[yRoot] = xRoot;
+        root[yRoot] = xRoot;
     }
     else if (rank[xRoot] < rank[yRoot])
     {
         // x merge into y
-        parent[yRoot] = xRoot;
+        root[yRoot] = xRoot;
     }
     else
     {
         // same rank => either one is fine
-        parent[yRoot] = xRoot;
+        root[yRoot] = xRoot;
         rank[xRoot]++;
     }
 }
@@ -42,9 +48,9 @@ void Undirected::unionSets(int *parent, int *rank, int x, int y)
 void Undirected::USolver(int &removedWeight, vector<Edge> &removedEdges)
 {
     // Kruskal MST algorithm
-    int *parent = new int[this->V];
+    int *root = new int[this->V];
     int *rank = new int[this->V];
-    fill_n(parent, this->V, -1);
+    fill_n(root, this->V, -1);
     fill_n(rank, this->V, 0);
 
     sort(this->edgeArr, this->edgeArr + this->E, Edge::CompareWeight);
@@ -54,13 +60,12 @@ void Undirected::USolver(int &removedWeight, vector<Edge> &removedEdges)
     {
         // cout << verticesCounter << "\t" << edgesCounter << "\n";
         Edge currEdge = this->edgeArr[edgesCounter];
-        // cout<<currEdge.u<< " -- " << currEdge.v << " : " << currEdge.w << "\n\n";
-
-        int uRoot = this->findRoot(parent, currEdge.u);
-        int vRoot = this->findRoot(parent, currEdge.v);
+        // cout << currEdge.u << " -- " << currEdge.v << " : " << currEdge.w << "\n\n";
+        int uRoot = this->findRoot(root, currEdge.u, currEdge.u);
+        int vRoot = this->findRoot(root, currEdge.v, currEdge.v);
         if (uRoot != vRoot)
         {
-            this->unionSets(parent, rank, uRoot, vRoot);
+            this->unionSets(root, rank, uRoot, vRoot);
             verticesCounter++;
         }
         else
@@ -70,6 +75,6 @@ void Undirected::USolver(int &removedWeight, vector<Edge> &removedEdges)
         }
         edgesCounter++;
     }
-    delete[] parent;
+    delete[] root;
     delete[] rank;
 }

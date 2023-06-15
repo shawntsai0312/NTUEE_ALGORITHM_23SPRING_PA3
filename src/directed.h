@@ -25,8 +25,8 @@ private:
 
     void DKruskalAddBack(int &removedWeight, vector<Edge> &removedEdges);
     void UKruskal(int &URemovedWeight, vector<Edge> &URemovedEdges, vector<Edge> &URemainEdges);
-    int findRoot(int *parent, int index);
-    void unionSets(int *parent, int *rank, int x, int y);
+    int findRoot(int *root, int index, int myIndex);
+    void unionSets(int *root, int *rank, int x, int y);
 
     void DKruskalGreedy(int &removedWeight, vector<Edge> &removedEdges);
     bool cycleChecker(Edge temp, vector<int> *adjList, bool *vAdded);

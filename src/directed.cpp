@@ -28,7 +28,7 @@ void Directed::DSolver(int &removedWeight, vector<Edge> &removedEdges)
     //     removedWeight = weightAnswer2;
     //     removedEdges = removedAnswer2;
     // }
-    DKruskalAddBack(removedWeight,removedEdges);
+    DKruskalAddBack(removedWeight, removedEdges);
 }
 
 void Directed::DKruskalAddBack(int &removedWeight, vector<Edge> &removedEdges)
@@ -78,32 +78,37 @@ void Directed::DKruskalAddBack(int &removedWeight, vector<Edge> &removedEdges)
     }
 }
 
-int Directed::findRoot(int *parent, int index)
+int Directed::findRoot(int *root, int index, int myIndex)
 {
-    if (parent[index] == -1)
+    if (root[index] == -1){
+        if (index != myIndex)
+        {
+            root[myIndex] = index;
+        }
         return index;
-    return this->findRoot(parent, parent[index]);
+    }
+    return this->findRoot(root, root[index], myIndex);
 }
 
-void Directed::unionSets(int *parent, int *rank, int x, int y)
+void Directed::unionSets(int *root, int *rank, int x, int y)
 {
-    int xRoot = this->findRoot(parent, x);
-    int yRoot = this->findRoot(parent, y);
+    int xRoot = this->findRoot(root, x, x);
+    int yRoot = this->findRoot(root, y, y);
 
     if (rank[xRoot] > rank[yRoot])
     {
         // y merge into x
-        parent[yRoot] = xRoot;
+        root[yRoot] = xRoot;
     }
     else if (rank[xRoot] < rank[yRoot])
     {
         // x merge into y
-        parent[yRoot] = xRoot;
+        root[yRoot] = xRoot;
     }
     else
     {
         // same rank => either one is fine
-        parent[yRoot] = xRoot;
+        root[yRoot] = xRoot;
         rank[xRoot]++;
     }
 }
@@ -111,9 +116,9 @@ void Directed::unionSets(int *parent, int *rank, int x, int y)
 void Directed::UKruskal(int &URemovedWeight, vector<Edge> &URemovedEdges, vector<Edge> &URemainedEdges)
 {
     // Kruskal MST algorithm
-    int *parent = new int[V];
+    int *root = new int[V];
     int *rank = new int[V];
-    fill_n(parent, V, -1);
+    fill_n(root, V, -1);
     fill_n(rank, V, 0);
 
     sort(this->edgeArr, this->edgeArr + this->E, Edge::CompareWeight);
@@ -125,11 +130,11 @@ void Directed::UKruskal(int &URemovedWeight, vector<Edge> &URemovedEdges, vector
         Edge currEdge = this->edgeArr[edgesCounter];
         // cout<<currEdge.u<< " -- " << currEdge.v << " : " << currEdge.w << "\n\n";
 
-        int uRoot = this->findRoot(parent, currEdge.u);
-        int vRoot = this->findRoot(parent, currEdge.v);
+        int uRoot = this->findRoot(root, currEdge.u, currEdge.u);
+        int vRoot = this->findRoot(root, currEdge.v, currEdge.v);
         if (uRoot != vRoot)
         {
-            this->unionSets(parent, rank, uRoot, vRoot);
+            this->unionSets(root, rank, uRoot, vRoot);
             verticesCounter++;
             URemainedEdges.push_back(currEdge);
         }
@@ -140,7 +145,7 @@ void Directed::UKruskal(int &URemovedWeight, vector<Edge> &URemovedEdges, vector
         }
         edgesCounter++;
     }
-    delete[] parent;
+    delete[] root;
     delete[] rank;
 }
 

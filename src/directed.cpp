@@ -33,11 +33,29 @@ void Directed::DSolver(int &removedWeight, vector<Edge> &removedEdges)
 
 void Directed::DKruskalAddBack(int &removedWeight, vector<Edge> &removedEdges)
 {
-    int URemovedWeight = 0;
-    vector<Edge> URemovedEdges, URemainedEdges;
-
+    // old method need this
+    // i don't want to modify cycle checker
     bool *vAdded = new bool[this->V];
     fill_n(vAdded, this->V, true);
+
+    // directed graph does not exist cycle
+    vector<int> *originalAdjList = new vector<int>[this->V];
+    for (int i = 1; i < this->E; i++)
+    {
+        originalAdjList[this->edgeArr[i].u].push_back(this->edgeArr[i].v);
+    }
+    if (!cycleChecker(this->edgeArr[0], originalAdjList, vAdded))
+    {
+        delete[] originalAdjList;
+        delete[] vAdded;
+        removedWeight = 0;
+        return;
+    }
+    delete[] originalAdjList;
+
+    // directed graph exist cycle
+    int URemovedWeight = 0;
+    vector<Edge> URemovedEdges, URemainedEdges;
 
     UKruskal(URemovedWeight, URemovedEdges, URemainedEdges);
     vector<int> *adjList = new vector<int>[this->V];
@@ -80,7 +98,8 @@ void Directed::DKruskalAddBack(int &removedWeight, vector<Edge> &removedEdges)
 
 int Directed::findRoot(int *root, int index, int myIndex)
 {
-    if (root[index] == -1){
+    if (root[index] == -1)
+    {
         if (index != myIndex)
         {
             root[myIndex] = index;

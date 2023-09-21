@@ -147,7 +147,7 @@ void Directed::UKruskal(int &URemovedWeight, vector<Edge> &URemovedEdges, vector
     {
         // cout << verticesCounter << "\t" << edgesCounter << "\n";
         Edge currEdge = this->edgeArr[edgesCounter];
-        // cout<<currEdge.u<< " -- " << currEdge.v << " : " << currEdge.w << "\n\n";
+        // cout << currEdge.u<< " -- " << currEdge.v << " : " << currEdge.w << "\n\n";
 
         int uRoot = this->findRoot(root, currEdge.u, currEdge.u);
         int vRoot = this->findRoot(root, currEdge.v, currEdge.v);
